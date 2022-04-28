@@ -100,6 +100,6 @@ if (DYNCAS_ghillieReduction) then {
 // Hard coded minimum to prevent invisibility
 if (_result < 0.1) then {_result = 0.1};
 
-_unit setUnitTrait ["camouflageCoef", _result];
+[_unit, ["camouflageCoef", _result]] remoteExec ["setUnitTrait", _unit];
 
 _result
