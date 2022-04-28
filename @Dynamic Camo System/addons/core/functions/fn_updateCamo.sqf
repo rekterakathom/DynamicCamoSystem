@@ -25,7 +25,7 @@ if (_unit isEqualTo objNull) exitWith {false};
 
 // Get player texture data
 private _playerTex = getObjectTextures _unit;
-if (_playerTex # 0 isEqualTo "") exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
+if (_playerTex isEqualTo [] || {_playerTex # 0 isEqualTo ""}) exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
 
 private _playerTexAvg = [];
 if ((_playerTex # 0) in _texCache) then {
@@ -76,7 +76,12 @@ for "_i" from 0 to 2 do {
 };
 
 _averages sort false;
-private _result = 0.35 + ((exp (sqrt(2) * _averages # 0)) - 1);
+// Old, exponential model
+//private _result = 0.35 + ((exp (sqrt(2) * _averages # 0)) - 1);
+
+// New sinusoidal model
+private _val = deg (pi * _averages # 0);
+private _result = 1.1 + ((sin(_val - 89.95))/2);
 
 // Night compensation 2: electric boogaloo
 // Reduce visibility by 20% because camo doesn't matter as much at night
