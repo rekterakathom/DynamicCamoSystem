@@ -18,19 +18,19 @@
 private _unit = param [0, objNull, [objNull]];
 private _isNight = (dayTime < 4 || dayTime > 20);
 
+// Error checks
+if (_unit isEqualTo objNull) exitWith {false};
+if !(isNull objectParent _unit) exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
+
 // Texture averages are cached for performance
 private _texCache = DYNCAS_texInfoCache;
-
-if (_unit isEqualTo objNull) exitWith {false};
 
 // Get player texture data
 private _playerTex = getObjectTextures _unit;
 if (_playerTex isEqualTo [] || {_playerTex # 0 isEqualTo ""}) exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
 
-private _playerTexAvg = [];
-if ((_playerTex # 0) in _texCache) then {
-	_playerTexAvg = _texCache get (_playerTex # 0);
-} else {
+private _playerTexAvg = _texCache get (_playerTex # 0);
+if (isNil "_playerTexAvg") then {
 	_playerTexAvg = (getTextureInfo (_playerTex # 0)) # 2;
 	DYNCAS_texInfoCache set [(_playerTex # 0), _playerTexAvg, true];
 	publicVariableServer "DYNCAS_texInfoCache";
@@ -40,10 +40,8 @@ if ((_playerTex # 0) in _texCache) then {
 private _groundTex = surfaceTexture getPosASL _unit;
 if (_groundTex isEqualTo "") exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
 
-private _groundTexAvg = [];
-if (_groundTex in _texCache) then {
-	_groundTexAvg = _texCache get _groundTex;
-} else {
+private _groundTexAvg = _texCache get _groundTex;
+if (isNil "_groundTexAvg") then {
 	_groundTexAvg = (getTextureInfo _groundTex) # 2;
 	DYNCAS_texInfoCache set [_groundTex, _groundTexAvg, true];
 	publicVariableServer "DYNCAS_texInfoCache";
@@ -63,15 +61,11 @@ if (DYNCAS_nightCompensation) then {
 
 private _averages = [];
 for "_i" from 0 to 2 do {
-	private _playerTexBigger = (_playerTexAvg # _i > _groundTexAvg # _i);
-
 	// Always calculate (bigger - smaller) / bigger
-	if !(_playerTexBigger) then {
-		private _return = (_groundTexAvg # _i - _playerTexAvg # _i) / _groundTexAvg # _i;
-		_averages pushBack _return;
+	if !(_playerTexAvg # _i > _groundTexAvg # _i) then {
+		_averages pushBack ((_groundTexAvg # _i - _playerTexAvg # _i) / _groundTexAvg # _i);
 	} else {
-		private _return = (_playerTexAvg # _i - _groundTexAvg # _i) / _playerTexAvg # _i;
-		_averages pushBack _return;
+		_averages pushBack ((_playerTexAvg # _i - _groundTexAvg # _i) / _playerTexAvg # _i);
 	};
 };
 
