@@ -1,6 +1,18 @@
 
 // ADVANCED SETTINGS
 
+	// Base multiplier
+	// This modifies the camo result linearly
+	[
+		"DYNCAS_baseMultiplier",
+		"Slider",
+		["Camo multiplier", "The camo effectiveness multiplier"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 2, 1, 2],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
 	// Lower limit
 	// This is the minimum below which the camo coefficient can't go.
 	[

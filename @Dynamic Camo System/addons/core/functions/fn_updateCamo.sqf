@@ -77,6 +77,9 @@ _averages sort false;
 private _val = deg (pi * _averages # 0);
 private _result = 1.1 + ((sin(_val - 89.95))/2);
 
+// Multiplier
+_result = _result * DYNCAS_baseMultiplier;
+
 // Night compensation 2: electric boogaloo
 // Reduce visibility by 20% because camo doesn't matter as much at night
 if (DYNCAS_nightCompensation) then {
