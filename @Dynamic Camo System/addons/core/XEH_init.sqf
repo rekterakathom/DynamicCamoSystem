@@ -37,6 +37,30 @@
 		{}
 	] call CBA_fnc_addSetting;
 
+	// Crouched effectiveness
+	// The amount your visibility is reduced when crouching
+	[
+		"DYNCAS_crouchReduction",
+		"Slider",
+		["Crouch Effectiveness", "How much your visibility is reduced when crouched"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 1, 0.05, 2],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
+	// Prone effectiveness
+	// The amount your visibility is reduced when proning
+	[
+		"DYNCAS_proneReduction",
+		"Slider",
+		["Prone Effectiveness", "How much your visibility is reduced when prone"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 1, 0.1, 2],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
 	// Run the script for
 	// Selects if the script should run for all players, player groups or all units
 	[
