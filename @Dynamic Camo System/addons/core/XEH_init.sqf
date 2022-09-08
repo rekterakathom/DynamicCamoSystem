@@ -1,6 +1,18 @@
 
 // ADVANCED SETTINGS
 
+	// Base multiplier
+	// This modifies the camo result linearly
+	[
+		"DYNCAS_baseMultiplier",
+		"Slider",
+		["Camo multiplier", "The camo effectiveness multiplier"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 2, 1, 2],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
 	// Lower limit
 	// This is the minimum below which the camo coefficient can't go.
 	[
@@ -21,6 +33,30 @@
 		["Camo coefficient upper limit", "The maximum visibility you can have."],
 		["Dynamic Camo System", "Advanced Settings"],
 		[1, 2, 1.4, 1],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
+	// Crouched effectiveness
+	// The amount your visibility is reduced when crouching
+	[
+		"DYNCAS_crouchReduction",
+		"Slider",
+		["Crouch Effectiveness", "How much your visibility is reduced when crouched"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 1, 0.05, 2],
+		nil,
+		{}
+	] call CBA_fnc_addSetting;
+
+	// Prone effectiveness
+	// The amount your visibility is reduced when proning
+	[
+		"DYNCAS_proneReduction",
+		"Slider",
+		["Prone Effectiveness", "How much your visibility is reduced when prone"],
+		["Dynamic Camo System", "Advanced Settings"],
+		[0, 1, 0.1, 2],
 		nil,
 		{}
 	] call CBA_fnc_addSetting;
