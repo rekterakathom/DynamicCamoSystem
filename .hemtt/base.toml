@@ -1,0 +1,11 @@
+name = "Dynamic-Camo-System"
+prefix = "DYNCAS"
+author = "ThomasAngel"
+template = "cba"
+mainprefix = "x"
+files = [
+    "LICENSE",
+    "README.md"
+]
+folder_optionals = false
+sig_version = 3
