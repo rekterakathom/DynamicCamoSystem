@@ -22,31 +22,42 @@ if (!isNil QGVAR(PFHID)) then {
     GVAR(PFHID) call CBA_fnc_removePerFrameHandler;
 };
 
-if (!CBA_SETTING(enabled)) exitWith {};
-
 // Main loop
 GVAR(PFHID) = [{
+    // Check if the CBA setting for whom the script runs for has changed or if DYNCAS has been disabled
+    if (GVAR(previousTargetSetting) != CBA_SETTING(targetList) || !CBA_SETTING(enabled)) then {
+        GVAR(previousTargetSetting) = CBA_SETTING(targetList);
+
+        // Reset the camo coef to 1 (only reset units that were altered by DYNCAS)
+        private _units = allUnits select {alive _x && {(GVAR(unitCache) getOrDefault [hashValue _x, 1]) != 1}};
+
+        {
+            [_x, ["camouflageCoef", 1]] remoteExecCall ["setUnitTrait", _x];
+        } forEach _units;
+
+        // Reset cache
+        GVAR(unitCache) = createHashMap;
+
+        // Add units that were just reset
+        {
+            GVAR(unitCache) set [hashValue _x, 1];
+        } forEach _units;
+    };
+
     // Stop PFH if CBA setting is disabled
     if (!CBA_SETTING(enabled)) exitWith {
         GVAR(PFHID) call CBA_fnc_removePerFrameHandler;
         GVAR(PFHID) = nil;
-
-        // If DYNCAS was disabled, reset the camo coef to 1 (only reset units that were altered by DYNCAS)
-        {
-            [_x, ["camouflageCoef", 1]] remoteExecCall ["setUnitTrait", _x];
-        } forEach (allUnits select {alive _x && {(GVAR(unitCache) getOrDefault [hashValue _x, 1]) != 1}});
-
-        // Reset cache
-        GVAR(unitCache) = createHashMap;
     };
 
     // Get all affected units
     private _targets = switch (CBA_SETTING(targetList)) do {
-        case 0: {call CBA_fnc_players};
+        case 2: {allUnits};
         case 1: {flatten ((allGroups select {isPlayer leader _x}) apply {units _x})};
-        default {allUnits};
+        default {call CBA_fnc_players};
     };
 
+    // Update camo coefficients on affected units
     {
         _x call FUNC(updateCamo);
     } forEach (_targets select {alive _x});

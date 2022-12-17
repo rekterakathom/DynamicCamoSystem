@@ -1,3 +1,5 @@
+#include "script_component.hpp"
+
 // ADVANCED SETTINGS
 
     // Lower limit
@@ -70,11 +72,11 @@
     ] call CBA_fnc_addSetting;
 
     // Ambient light compensation
-    // The mod will make the ground texture darker in the calculations between 8PM and 4AM to account for the night.
+    // The mod will make the ground texture darker in the calculations for dark spots.
     [
         QCBA_SETTING(nightCompensation),
         "SLIDER",
-        ["Take ambient lighting reduction", "Favour dark clothing and reduce all visibility by this setting's amount in low light level areas.\n0 means reduction doesn't apply."],
+        ["Ambient lighting reduction", "Favour dark clothing and reduce all visibility by this setting's amount in low light level areas.\n0 means reduction doesn't apply."],
         [COMPONENT_NAME, "Basic Settings"],
-        [0, 2, 0.8, 2, true]
+        [0, 1, 0.8, 2, true]
     ] call CBA_fnc_addSetting;
