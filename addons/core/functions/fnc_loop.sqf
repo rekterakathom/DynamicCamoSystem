@@ -54,7 +54,7 @@ GVAR(PFHID) = [{
     private _targets = switch (CBA_SETTING(targetList)) do {
         case 2: {allUnits};
         case 1: {flatten ((allGroups select {isPlayer leader _x}) apply {units _x})};
-        default {call CBA_fnc_players};
+        default {allPlayers - entities "HeadlessClient_F"};
     };
 
     // Update camo coefficients on affected units
