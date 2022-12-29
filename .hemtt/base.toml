@@ -10,3 +10,8 @@ files = [
 ]
 folder_optionals = false
 sig_version = 3
+
+modname = "Dynamic Camo System"
+
+[version]
+path = "addons/core/script_version.hpp"
