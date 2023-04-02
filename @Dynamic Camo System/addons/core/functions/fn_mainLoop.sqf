@@ -36,11 +36,6 @@ private _UpdateTimeData =
 DYNCAS_texInfoCache = createHashMap;
 publicVariableServer "DYNCAS_texInfoCache";
 
-private _timeRange = call BIS_fnc_sunriseSunsetTime
-DYNCAS_lastSunriseTime = _timeRange select 0;
-DYNCAS_lastSunsetTime = _timeRange select 1;
-DYNCAS_lastDate = date;
-
 // Main loop
 while {DYNCAS_enabled} do {
 	private _allPlayers = call CBA_fnc_players;
