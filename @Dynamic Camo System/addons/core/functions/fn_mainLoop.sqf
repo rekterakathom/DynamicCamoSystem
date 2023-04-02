@@ -19,6 +19,8 @@ if !(isServer) exitWith {false};
 private _UpdateTimeData =
 {
 	private _d = date;
+	_d resize 3;
+
 	if (_d isEqualTo DYNCAS_lastDate) exitWith {false};
 
 	private _timeRange = _d call BIS_fnc_sunriseSunsetTime;
