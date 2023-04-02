@@ -16,11 +16,16 @@
 */
 
 private _unit = param [0, objNull, [objNull]];
-private _isNight = (dayTime < 4 || dayTime > 20);
 
 // Error checks
 if (_unit isEqualTo objNull) exitWith {false};
 if !(isNull objectParent _unit) exitWith {_unit setUnitTrait ["camouflageCoef", 1]; false};
+
+private _timeRange = date call BIS_fnc_sunriseSunsetTime;
+private _sunriseT = _timeRange select 0;
+private _sunsetT = _timeRange select 1;
+private _t = dayTime;
+private _isNight = (_t < _sunriseT) || { _t > _sunsetT };
 
 // Texture averages are cached for performance
 private _texCache = DYNCAS_texInfoCache;
