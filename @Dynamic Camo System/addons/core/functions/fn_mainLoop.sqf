@@ -18,17 +18,19 @@ if !(isServer) exitWith {false};
 
 private _UpdateTimeData =
 {
-	private _d = date;
+	private _dFull = date;
+	private _d = +_dFull;
 	_d resize 3;
 
 	if (_d isEqualTo DYNCAS_lastDate) exitWith {false};
 
-	private _timeRange = _d call BIS_fnc_sunriseSunsetTime;
+	private _timeRange = _dFull call BIS_fnc_sunriseSunsetTime;
 	DYNCAS_lastSunriseTime = _timeRange select 0;
 	DYNCAS_lastSunsetTime = _timeRange select 1;
+	_d resize 3;
 	DYNCAS_lastDate = _d;
 	true;
-}
+};
 
 // Create the cache
 DYNCAS_texInfoCache = createHashMap;
