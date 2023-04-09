@@ -1,0 +1,17 @@
+name = "Dynamic-Camo-System"
+prefix = "DYNCAS"
+author = "ThomasAngel"
+template = "cba"
+mainprefix = "x"
+files = [
+    "LICENSE",
+    "mod.cpp",
+    "README.md"
+]
+folder_optionals = false
+sig_version = 3
+
+modname = "Dynamic Camo System"
+
+[version]
+path = "addons/core/script_version.hpp"
