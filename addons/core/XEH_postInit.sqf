@@ -1,9 +1,12 @@
 #include "script_component.hpp"
 
-if (!isServer) exitWith {};
-
 // Create texture cache, to speed up getting of texture colors
+// Clients have their own as well
 GVAR(texInfoCache) = createHashMap;
+
+if (hasInterface) then {call FUNC(clientLoop)};
+
+if (!isServer) exitWith {};
 
 // Create unit cache, to store which units have been affected by this mod
 GVAR(unitCache) = createHashMap;
