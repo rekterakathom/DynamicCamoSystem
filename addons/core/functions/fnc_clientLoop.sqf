@@ -18,10 +18,15 @@
 */
 
 if (!hasInterface) exitWith {};
+if !(isClass (configFile >> "cfgPatches" >> "cba_common")) exitWith {}; // Client doesn't have CBA
 
 // If PFH is already running, stop the previous one
 if (!isNil QGVAR(CLIENT_PFHID)) then {
     GVAR(CLIENT_PFHID) call CBA_fnc_removePerFrameHandler;
+};
+
+if (isNil QGVAR(texInfoCache)) then {
+	GVAR(texInfoCache) = createHashMap;
 };
 
 GVAR(CLIENT_PFHID) = [{
@@ -41,6 +46,7 @@ GVAR(CLIENT_PFHID) = [{
 
 		// Don't save opacity
 		_playerTexAvg deleteAt 3;
+		_playerTexAvg = _playerTexAvg apply {parseNumber (_x toFixed 3)}; // Cut down the accuracy to a thousandth
 		GVAR(texInfoCache) set [_playerTex, _playerTexAvg];
 
 		// Check if result is already known
@@ -56,6 +62,7 @@ GVAR(CLIENT_PFHID) = [{
 
 		// Don't save opacity
 		_groundTexAvg deleteAt 3;
+		_groundTexAvg = _groundTexAvg apply {parseNumber (_x toFixed 3)}; // Cut down the accuracy to a thousandth
 		GVAR(texInfoCache) set [_groundTex, _groundTexAvg];
 
 		// Check if result is already known

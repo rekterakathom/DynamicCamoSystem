@@ -1,12 +1,13 @@
 #include "script_component.hpp"
 
-// Create texture cache, to speed up getting of texture colors
-// Clients have their own as well
-GVAR(texInfoCache) = createHashMap;
-
-if (hasInterface) then {call FUNC(clientLoop)};
-
 if (!isServer) exitWith {};
+
+GVAR(clientLoop) = compileScript ["x\DYNCAS\addons\core\functions\fnc_clientLoop.sqf", true];
+publicVariable QGVAR(clientLoop);
+[] remoteExecCall [QGVAR(clientLoop), [0, -2] select isDedicated, true];
+
+// Create texture cache, to speed up getting of texture colors
+GVAR(texInfoCache) = createHashMap;
 
 // Create unit cache, to store which units have been affected by this mod
 GVAR(unitCache) = createHashMap;
