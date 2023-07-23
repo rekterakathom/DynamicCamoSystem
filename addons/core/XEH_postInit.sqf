@@ -2,6 +2,9 @@
 
 if (!isServer) exitWith {};
 
+GVAR(clientSendTextures) = compileScript ["x\DYNCAS\addons\core\functions\fnc_clientSendTextures.sqf", true];
+publicVariable QGVAR(clientSendTextures);
+
 // Create texture cache, to speed up getting of texture colors
 GVAR(texInfoCache) = createHashMap;
 

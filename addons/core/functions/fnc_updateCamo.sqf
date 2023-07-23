@@ -43,21 +43,49 @@ if (!isNull objectParent _unit || _playerTex isEqualTo "" || _groundTex isEqualT
 private _playerTexAvg = GVAR(texInfoCache) get _playerTex;
 
 if (isNil "_playerTexAvg") then {
-    _playerTexAvg = (getTextureInfo _playerTex) # 2;
+    // Try to retrieve the data for the texture
+    _playerTexAvg = missionNamespace getVariable format ["DYNCAS_playerTextureCache_%1", _playerTex];
 
-    // Don't save opacity
-    _playerTexAvg deleteAt 3;
-    GVAR(texInfoCache) set [_playerTex, _playerTexAvg];
+    // Retrieve successful
+    if !(isNil "_playerTexAvg") then {
+        GVAR(texInfoCache) set [_playerTex, _playerTexAvg];
+    };
+};
+
+// Retrieval unsuccessful -> we don't know the average, so exit by asking the client
+// Don't reset to 1 because this might cause a sharp increase in visibility and player gets spotted :(
+if (isNil "_playerTexAvg") exitWith {
+    // Don't ask for dedicated server owned units
+    if (isMultiplayer && !(isDedicated && {owner _unit isEqualTo 2})) then {
+        // Ask for both
+        [true, true] remoteExecCall [QGVAR(clientSendTextures), _unit, false];
+    } else {
+        [true, true] call GVAR(clientSendTextures);
+    };
 };
 
 private _groundTexAvg = GVAR(texInfoCache) get _groundTex;
 
 if (isNil "_groundTexAvg") then {
-    _groundTexAvg = (getTextureInfo _groundTex) # 2;
+    // Try to retrieve the data for the texture
+    _groundTexAvg = missionNamespace getVariable format ["DYNCAS_groundTextureCache_%1", _groundTex];
 
-    // Don't save opacity
-    _groundTexAvg deleteAt 3;
-    GVAR(texInfoCache) set [_groundTex, _groundTexAvg];
+    // Retrieve successful
+    if !(isNil "_groundTexAvg") then {
+        GVAR(texInfoCache) set [_groundTex, _groundTexAvg];
+    };
+};
+
+// Retrieval unsuccessful -> we don't know the average, so exit by asking the client
+// Don't reset to 1 because this might cause a sharp increase in visibility and player gets spotted :(
+if (isNil "_groundTexAvg") exitWith {
+    // Don't ask for dedicated server owned units
+    if (isMultiplayer && !(isDedicated && {owner _unit isEqualTo 2})) then {
+        // We only need to get the ground texture, function would have exited if the uniform wasn't known
+        [false, true] remoteExecCall [QGVAR(clientSendTextures), _unit, false];
+    } else {
+        [false, true] call GVAR(clientSendTextures);
+    };
 };
 
 // Check ambient lighting to see if dark
