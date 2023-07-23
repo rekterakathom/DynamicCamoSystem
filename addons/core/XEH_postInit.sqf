@@ -2,9 +2,8 @@
 
 if (!isServer) exitWith {};
 
-GVAR(clientLoop) = compileScript ["x\DYNCAS\addons\core\functions\fnc_clientLoop.sqf", true];
-publicVariable QGVAR(clientLoop);
-[] remoteExecCall [QGVAR(clientLoop), [0, -2] select isDedicated, true];
+GVAR(clientSendTextures) = compileScript ["x\DYNCAS\addons\core\functions\fnc_clientSendTextures.sqf", true];
+publicVariable QGVAR(clientSendTextures);
 
 // Create texture cache, to speed up getting of texture colors
 GVAR(texInfoCache) = createHashMap;
